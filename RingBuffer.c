@@ -22,12 +22,10 @@ void yapiyiBaslat(RingBuffer *newBuffer)
 int counter = 10;
 void yaz(RingBuffer *newBuffer, int yazilacakSayi)
 {
-    int yeniYazanIndex = (newBuffer->yazanIndex + 1) % BufferSize;
-
-    if (yeniYazanIndex != newBuffer->okuyanIndex)
+    if ((newBuffer->yazanIndex + 1) % BufferSize  != newBuffer->okuyanIndex)
     {
         newBuffer->buffer[newBuffer->yazanIndex] = yazilacakSayi;
-        newBuffer->yazanIndex = yeniYazanIndex;
+        newBuffer->yazanIndex = (newBuffer->yazanIndex + 1) % BufferSize;
         counter++;
     }
     else
@@ -38,11 +36,11 @@ void yaz(RingBuffer *newBuffer, int yazilacakSayi)
 
 int oku(RingBuffer *newBuffer)
 {
-    int okunanSayi = -1;
+    newBuffer->okunanSayi = -1;
 
     if (newBuffer->okuyanIndex != newBuffer->yazanIndex)
     {
-        okunanSayi = newBuffer->buffer[newBuffer->okuyanIndex];
+        newBuffer->okunanSayi = newBuffer->buffer[newBuffer->okuyanIndex];
         newBuffer->okuyanIndex = (newBuffer->okuyanIndex + 1) % BufferSize;
     }
     else
@@ -50,7 +48,7 @@ int oku(RingBuffer *newBuffer)
         printf("Buffer bos! Okuma islemi gerceklestirilemedi.\n");
     }
 
-    return okunanSayi;
+    return newBuffer->okunanSayi;
 }
 
 int main()
