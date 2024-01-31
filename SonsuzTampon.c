@@ -1,79 +1,80 @@
 #include <stdio.h>
-#include <stdint.h>
 #include <stdbool.h>
 
-#define BufferSize 6
+#define BufferBoyutu 6
 
 typedef struct
 {
-    int buffer[BufferSize];
+    int buffer[BufferBoyutu];
     int okunanSayi;
-
-    int yazanIndex;
-    int okuyanIndex;
+    int yazmaIndexi;
+    int okumaIndexi;
 } RingBuffer;
 
-void yapiyiBaslat(RingBuffer *newBuffer)
+void baslatRingBuffer(RingBuffer *Buffer)
 {
-    newBuffer->yazanIndex = 0;
-    newBuffer->okuyanIndex = 0;
+    Buffer->okunanSayi = 0;
+    Buffer->yazmaIndexi = 0;
+    Buffer->okumaIndexi = 0;
 }
 
 int counter = 10;
-void yaz(RingBuffer *newBuffer, int yazilacakSayi)
+void yaz(RingBuffer *Buffer, int yazilacakSayi)
 {
-    if ((newBuffer->yazanIndex + 1) % BufferSize  != newBuffer->okuyanIndex)
+    if ((Buffer->yazmaIndexi + 1) % BufferBoyutu  != Buffer->okumaIndexi) // Buffer dolumu diye kontrol ettik.
     {
-        newBuffer->buffer[newBuffer->yazanIndex] = yazilacakSayi;
-        newBuffer->yazanIndex = (newBuffer->yazanIndex + 1) % BufferSize;
+        Buffer->buffer[Buffer->yazmaIndexi] = yazilacakSayi;
+        Buffer->yazmaIndexi = (Buffer->yazmaIndexi + 1) % BufferBoyutu;
         counter++;
     }
     else
     {
-        printf("Buffer dolu! Yazma islemi gerceklestirilemedi.\n");
+        printf("Buffer dolu. Daha fazla yazamazsın! \n");
     }
 }
 
-int oku(RingBuffer *newBuffer)
+int oku(RingBuffer *Buffer)
 {
-    newBuffer->okunanSayi = -1;
+    Buffer->okunanSayi = -1;
 
-    if (newBuffer->okuyanIndex != newBuffer->yazanIndex)
+    if (Buffer->okumaIndexi != Buffer->yazmaIndexi) // // Buffer boş mu diye kontrol ettik.
     {
-        newBuffer->okunanSayi = newBuffer->buffer[newBuffer->okuyanIndex];
-        newBuffer->okuyanIndex = (newBuffer->okuyanIndex + 1) % BufferSize;
+        Buffer->okunanSayi = Buffer->buffer[Buffer->okumaIndexi];
+        Buffer->okumaIndexi = (Buffer->okumaIndexi + 1) % BufferBoyutu;
     }
     else
     {
-        printf("Buffer bos! Okuma islemi gerceklestirilemedi.\n");
+        printf("Buffer boş. Okuyacak bir şey kalmadı. \n");
     }
 
-    return newBuffer->okunanSayi;
+    return Buffer->okunanSayi;
 }
 
 int main()
 {
-    RingBuffer newBuffer1;
-    yapiyiBaslat(&newBuffer1);
+    RingBuffer yeniBuffer;
+    initRingBuffer(&yeniBuffer);
     int getLine;
 
+/* Aşağıdaki kodlar ile 1'e tıklandığında "yaz" 2'ye tıklandığında "oku" çalışır. 
+ Bu sayede programı test edebiliriz. */
     while (1)
     {
         printf("*******************************\n");
 
-        printf("Islem Numarasi Giriniz (1: Yaz, 2: Oku): ");
+        printf("Islem numarasi giriniz(1: yaz, 2: oku): ");
         scanf("%d", &getLine);
 
         if (getLine == 1)
         {
-            yaz(&newBuffer1, counter);
+            write(&yeniBuffer, counter);
         }
         else if (getLine == 2)
         {
-            printf("Okunan Sayi: %d\n", oku(&newBuffer1));
+            printf("Okunan Sayi: %d\n", read(&yeniBuffer));
         }
 
-        printf("(Yazan Index: %d \t Okuyan Index: %d)\n", newBuffer1.yazanIndex, newBuffer1.okuyanIndex);
+        printf("(yazmaIndexi: %d \t okumaIndexi: %d)\n", yeniBuffer.yazmaIndexi, yeniBuffer.okumaIndexi);
         printf("*******************************\n\n\n\n");
     }
 
