@@ -19,11 +19,11 @@ void initRingBuffer(RingBuffer *newBuffer)
 }
 
 int counter = 10;
-void write(RingBuffer *newBuffer, int yazilacakSayi)
+void write(RingBuffer *newBuffer, int readNumberParam)
 {
     if ((newBuffer->writeIndex + 1) % BufferSize  != newBuffer->readIndex)
     {
-        newBuffer->buffer[newBuffer->writeIndex] = yazilacakSayi;
+        newBuffer->buffer[newBuffer->writeIndex] = readNumberParam;
         newBuffer->writeIndex = (newBuffer->writeIndex + 1) % BufferSize;
         counter++;
     }
