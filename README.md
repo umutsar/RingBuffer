@@ -1,4 +1,2 @@
 # RingBuffer
-Ring Buffer/Circle Buffer (Döngüsel Tampon), (Dönel Tampon), (Sonsuz Tampon)
-
-Türkçe ve ingilizce olarak yazılmıştır.
+Ring Buffer/Circular Buffer (Döngüsel Tampon), (Dönel Tampon), (Sonsuz Tampon)
