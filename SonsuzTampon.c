@@ -1,3 +1,14 @@
+/*
+    Bu kod mikrodenetleyici kartları için optimize edilmiştir. 
+    Proje hedeflerinize göre uint_size türünü ayarlayın. Eğer 
+    bir mikrodenetleyici projesi için çalışıyorsanız ve UART,
+    I2C veya CAN gibi haberleşme protokollerini kullanıyorsanız
+    bu protokoller sadece 8 bit veriyi desteklediği için uint_8 
+    veri türünü kullanmanız gerekir. 
+    
+    Dipnot: İmzalanmamış 8 bit bir sayı 0 ile 255 arasında değerler 
+    alır.
+*/
 #include <stdio.h>
 #include <stdbool.h>
 
